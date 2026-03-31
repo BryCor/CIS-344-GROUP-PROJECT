@@ -6,8 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $app_id = $_POST['application_id'];
         if ($_POST['action'] == 'approve') {
             mysqli_query($conn, "UPDATE applications SET status='Approved' WHERE application_id=$app_id");
-            $pet_id = mysqli_fetch_assoc(mysqli_query($conn, "SELECT pet_id FROM applications WHERE application_id=$app_id"))['pet_id'];
-            mysqli_query($conn, "UPDATE pets SET status='Adopted' WHERE pet_id=$pet_id");
         } elseif ($_POST['action'] == 'deny') {
             mysqli_query($conn, "UPDATE applications SET status='Denied' WHERE application_id=$app_id");
         }
@@ -15,16 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $adopter_id = $_POST['adopter_id'];
         $pet_id = $_POST['pet_id'];
-        $notes = $_POST['notes'];
-        $sql = "INSERT INTO applications (adopter_id, pet_id, notes) VALUES ($adopter_id, $pet_id, '$notes')";
+        $sql = "INSERT INTO applications (adopter_id, pet_id) VALUES ($adopter_id, $pet_id)";
         mysqli_query($conn, $sql);
         header("Location: applications.php");
     }
 }
 
-$adopters = mysqli_query($conn, "SELECT adopter_id, full_name FROM adopters");
-$pets = mysqli_query($conn, "SELECT pet_id, name FROM pets WHERE status='Available'");
-$apps = mysqli_query($conn, "SELECT a.application_id, b.full_name, p.name, p.species, a.application_date, a.status, a.notes FROM applications a JOIN adopters b ON a.adopter_id=b.adopter_id JOIN pets p ON a.pet_id=p.pet_id");
+$adopters = mysqli_query($conn, "SELECT adopter_id, Name as full_name FROM adopters");
+$pets = mysqli_query($conn, "SELECT pet_id, name FROM pets");
+$apps = mysqli_query($conn, "SELECT a.application_id, b.Name as full_name, p.name, p.species, a.application_date, a.status FROM applications a JOIN adopters b ON a.adopter_id=b.adopter_id JOIN pets p ON a.pet_id=p.pet_id");
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,7 +45,6 @@ $apps = mysqli_query($conn, "SELECT a.application_id, b.full_name, p.name, p.spe
                 <option value="<?php echo $row['pet_id']; ?>"><?php echo $row['name']; ?></option>
             <?php } ?>
         </select><br>
-        Notes: <input type="text" name="notes"><br>
         <input type="submit" value="Submit">
     </form>
 
@@ -61,7 +57,6 @@ $apps = mysqli_query($conn, "SELECT a.application_id, b.full_name, p.name, p.spe
             <th>Species</th>
             <th>Date</th>
             <th>Status</th>
-            <th>Notes</th>
             <th>Actions</th>
         </tr>
         <?php while ($row = mysqli_fetch_assoc($apps)) { ?>
@@ -72,7 +67,6 @@ $apps = mysqli_query($conn, "SELECT a.application_id, b.full_name, p.name, p.spe
             <td><?php echo $row['species']; ?></td>
             <td><?php echo $row['application_date']; ?></td>
             <td><?php echo $row['status']; ?></td>
-            <td><?php echo $row['notes']; ?></td>
             <td>
                 <?php if ($row['status'] == 'Pending') { ?>
                     <form method="post" style="display:inline;">

@@ -1,4 +1,4 @@
-USE mydb;
+USE pet_adoption_db;
 
 -- =====================
 -- INSERT SAMPLE DATA
@@ -11,7 +11,7 @@ INSERT INTO adopters (Name, Email)
 VALUES ('John Doe', 'john@email.com');
 
 INSERT INTO applications (adopter_id, pet_id, application_date)
-VALUES (1, 1, CURDATE());
+VALUES (1, 1, '2024-06-01');
 
 -- =====================
 -- JOIN QUERY
