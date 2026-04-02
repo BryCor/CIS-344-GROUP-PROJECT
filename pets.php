@@ -40,7 +40,7 @@ $result = mysqli_query($conn, $sql);
     </form>
 
     <h2>Pet List</h2>
-    <table border="1">
+    <table class="table">
         <tr>
             <th>ID</th>
             <th>Name</th>

@@ -49,7 +49,7 @@ $apps = mysqli_query($conn, "SELECT a.application_id, b.Name as full_name, p.nam
     </form>
 
     <h2>Applications List</h2>
-    <table border="1">
+    <table class="table">
         <tr>
             <th>ID</th>
             <th>Adopter</th>

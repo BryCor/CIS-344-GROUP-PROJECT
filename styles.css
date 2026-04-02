@@ -23,7 +23,6 @@
   --radius: 4px;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --transition: all 0.3s ease;
 }
 
 /* ===== Reset ===== */
@@ -44,7 +43,7 @@ body {
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
-  display: flex;
+  display: block;
   -webkit-font-smoothing: antialiased;
 }
 
